@@ -1,103 +1,183 @@
-import Image from "next/image";
+"use client";
+
+import { useState, useEffect } from "react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Plus, Play, Trash2 } from "lucide-react";
+import { Quiz } from "@/lib/types";
+import { QuizStorage } from "@/lib/storage";
+import Navbar from "@/components/navbar";
+import Link from "next/link";
+
+// Dummy data
+const dummyQuizzes: Quiz[] = [
+  {
+    id: "1",
+    title: "General Knowledge Quiz",
+    createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
+    updatedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
+    questions: [
+      {
+        id: "q1",
+        question: "What is the capital of France?",
+        options: ["London", "Berlin", "Paris", "Madrid"],
+        correctAnswer: 2
+      },
+      {
+        id: "q2",
+        question: "Which planet is known as the Red Planet?",
+        options: ["Venus", "Mars", "Jupiter", "Saturn"],
+        correctAnswer: 1
+      }
+    ]
+  },
+  {
+    id: "2",
+    title: "History Quiz",
+    createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+    updatedAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+    questions: [
+      {
+        id: "q3",
+        question: "In which year did World War II end?",
+        options: ["1944", "1945", "1946", "1947"],
+        correctAnswer: 1
+      },
+      {
+        id: "q4",
+        question: "Who was the first President of the United States?",
+        options: ["Thomas Jefferson", "John Adams", "George Washington", "Benjamin Franklin"],
+        correctAnswer: 2
+      }
+    ]
+  },
+  {
+    id: "3",
+    title: "Science Quiz",
+    createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
+    updatedAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
+    questions: [
+      {
+        id: "q5",
+        question: "What is the chemical symbol for gold?",
+        options: ["Go", "Gd", "Au", "Ag"],
+        correctAnswer: 2
+      },
+      {
+        id: "q6",
+        question: "How many bones are in the adult human body?",
+        options: ["206", "208", "210", "212"],
+        correctAnswer: 0
+      }
+    ]
+  }
+];
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [quizzes, setQuizzes] = useState<Quiz[]>([]);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  useEffect(() => {
+    // Load quizzes from localStorage or use dummy data
+    const savedQuizzes = QuizStorage.getQuizzes();
+    if (savedQuizzes.length > 0) {
+      setQuizzes(savedQuizzes);
+    } else {
+      setQuizzes(dummyQuizzes);
+      QuizStorage.saveQuizzes(dummyQuizzes);
+    }
+  }, []);
+
+  const formatDate = (date: Date) => {
+    const now = new Date();
+    const diffTime = Math.abs(now.getTime() - new Date(date).getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays === 1) return "Updated 1 day ago";
+    if (diffDays < 7) return `Updated ${diffDays} days ago`;
+    if (diffDays < 14) return "Updated 1 week ago";
+    if (diffDays < 30) return `Updated ${Math.floor(diffDays / 7)} weeks ago`;
+    return `Created ${Math.floor(diffDays / 30)} month${Math.floor(diffDays / 30) > 1 ? 's' : ''} ago`;
+  };
+
+  const handleDeleteQuiz = (quizId: string) => {
+    const updatedQuizzes = quizzes.filter(quiz => quiz.id !== quizId);
+    setQuizzes(updatedQuizzes);
+    QuizStorage.saveQuizzes(updatedQuizzes);
+  };
+
+  return (
+    <div className="min-h-screen bg-background">
+      <Navbar />
+
+      {/* Main Content */}
+      <main className="w-full px-4 sm:px-6 lg:px-12 xl:px-16 py-6 sm:py-8">
+        <div className="mb-6 sm:mb-8">
+          <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-2">My Quizzes</h2>
+          <p className="text-sm sm:text-base text-muted-foreground">Create, edit, and manage your quizzes</p>
         </div>
+
+        {/* Quiz Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 sm:gap-6">
+          {quizzes.map((quiz) => (
+            <Card key={quiz.id} className="hover:shadow-lg transition-all duration-200 hover:-translate-y-1 border-0 shadow-md">
+              <CardHeader className="pb-3 p-4 sm:p-5">
+                <div className="flex justify-between items-start">
+                  <div className="flex-1">
+                    <CardTitle className="text-base sm:text-lg font-semibold text-foreground mb-1 leading-tight">
+                      {quiz.title}
+                    </CardTitle>
+                    <CardDescription className="text-xs sm:text-sm text-muted-foreground">
+                      {quiz.questions.length} Question{quiz.questions.length !== 1 ? 's' : ''}
+                    </CardDescription>
+                  </div>
+                </div>
+                <div className="text-xs text-muted-foreground mt-2">
+                  {formatDate(quiz.updatedAt)}
+                </div>
+              </CardHeader>
+              <CardContent className="pt-0 p-4 sm:p-5">
+                <div className="flex justify-start items-center">
+                  <div className="flex space-x-1 sm:space-x-2">
+                    <Link href={`/quiz/${quiz.id}`}>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="text-blue-600 hover:text-blue-700 hover:bg-blue-50 p-2"
+                      >
+                        <Play className="w-4 h-4" />
+                      </Button>
+                    </Link>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-red-600 hover:text-red-700 hover:bg-red-50 p-2"
+                      onClick={() => handleDeleteQuiz(quiz.id)}
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {quizzes.length === 0 && (
+          <div className="text-center py-12 sm:py-16">
+            <div className="w-20 h-20 sm:w-24 sm:h-24 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
+              <Plus className="w-6 h-6 sm:w-8 sm:h-8 text-muted-foreground" />
+            </div>
+            <h3 className="text-lg sm:text-xl font-medium text-foreground mb-2">No quizzes yet</h3>
+            <p className="text-sm sm:text-base text-muted-foreground mb-6">Get started by creating your first quiz</p>
+            <Link href="/create">
+              <Button className="bg-blue-600 hover:bg-blue-700 px-4 sm:px-6 py-2">
+                <Plus className="w-4 h-4 mr-2" />
+                Create New Quiz
+              </Button>
+            </Link>
+          </div>
+        )}
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
     </div>
   );
 }
